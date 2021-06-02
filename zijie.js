@@ -316,29 +316,36 @@ if(x === 0) {
 //字符串的排列
 function Permutation(str)
 {
-  // write code here
-  let strarr = [...str].sort()
-  console.log(strarr)
-  let result = []
-  const DFS = function(arr) {
-      if(arr.length === strarr.length) {
-          result.push(arr.slice())
-          return
-      }
-
-      for(let i=0;i<strarr.length; i++) {
-          console.log(arr, i)
-          if(!arr.includes(strarr[i])) {
-              arr.push(strarr[i])
-              DFS(arr)
-              arr.pop()
-          }
-      }
-  }
-  DFS([])
-return result
-  
+    // write code here
+    let res = []
+    let strarr = [...str].sort()
+    let len = str.length
+    const vis = new Array(str.length).fill(false)
+    const backtrace = (idx, perm) => {//idx表示下一个代填入的位置是第index个位置，pern表示当前排列
+        if(idx === len) {
+            res.push(perm.join(''))
+        }
+        for(let i=0; i<len; i++) {
+            if(vis[i] ||(i>0 && strarr[i]=== strarr[i-1] && !vis[i-1])) {
+                continue;
+            }
+            perm.push(strarr[i])
+        //       console.log('idx nums[i]', idx, strarr[i])
+              vis[i] = true //将第i项使用过设为true
+        //       console.log('vis', vis)
+              backtrace(idx+1, perm)
+              vis[i] = false
+        //       console.log('vis 置为未访问过',vis)
+        //       console.log('pop', perm.pop(), perm)
+              perm.pop()
+        }
+    }
+    backtrace(0, [])
+    return res
 }
+module.exports = {
+    Permutation : Permutation
+};
 // 给定一个整型数组arr和一个大于1的整数k。已知arr中只有1个数出现了一次，其他的数出现k次，请返回出现了1次的数。
 function foundOnceNumber( arr ,  k ) {
   // write code here

@@ -35,7 +35,7 @@ var myAtoi2 = function(s) {
             this.state = 'start'; //执行阶段，默认处于开始执行阶段
             this.sign=1;//正负号
             this.answer = 0;
-            //状态和执行阶段对应表 :含义如下:[执行阶段, [空格，政府，数值，其他]]
+            //状态和执行阶段对应表 :含义如下:[执行阶段, [空格，正负，数值，其他]]
             this.map = new Map(
             [
                 ['start', ['start', 'signed', 'in_number', 'end']],
@@ -253,3 +253,6 @@ var convert = function(s, numRows) {
 var numDecodings = function(s) {
 
 };
+
+
+

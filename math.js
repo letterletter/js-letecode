@@ -355,6 +355,64 @@ var longestConsecutive = function(nums) {
     return max
 };
 
+
+//最长连续子序列的个数
+//动态规划
+/**
+ * 
+ * @param  nums
+ * {假设对于以 nums[i] 结尾的序列，我们知道最长序列的长度 length[i]，以及具有该长度的序列的 count[i]。
+对于每一个 i<j 和一个 A[i]<A[j]，我们可以将一个 A[j] 附加到以 A[i] 结尾的最长子序列上。
+如果这些序列比 length[j] 长，那么我们就知道我们有count[i] 个长度为 length 的序列。如果这些序列的长度与 length[j] 相等，那么我们就知道现在有 count[i] 个额外的序列（即 count[j]+=count[i]）。
+}  
+ * @returns 
+ */
+var findNumberOfLIS = function(nums) {
+    let n = nums.length
+    if(n<=1) return n;
+    let lengths = new Array(n).fill(1) //以nums[i]结尾的最长序列的长度
+    let counts = new Array(n).fill(1) //到nums[i]为止的最长递增子序列个数
+    let map = new Map()  //以nums[i]结尾，递增数组
+    for(let j=0; j<n; j++) {
+        map.set(j, [''+nums[j]])
+        for(let i=0; i<j; i++) {
+            if(nums[i] < nums[j]) {
+                if(lengths[i] >=lengths[j]) {
+                    lengths[j] = lengths[i]+1
+                    let ans =' '+nums[j]
+                    const arr = []
+                    for(let k=0; k<map.get(i).length; k++) {
+                        ans = map.get(i)[k]+ans
+                        arr.push(ans)
+                    }
+                    map.set(j, arr)
+                    counts[j] = counts[i]
+                }else if(lengths[i]+1 === lengths[j]) {
+                    //说明最长递增子序列的长度并没有增加，但是出现了长度一样的情况，数量增加 count[j] += count[i]
+                    counts[j] +=counts[i]
+                    const arr = map.get(j)
+                    let ans =' '+nums[j]
+                    for(let k=0; k<map.get(i).length; k++) {
+                        ans = map.get(i)[k]+ans
+                        arr.push(ans)
+                    }
+                    map.set(j, arr)
+                }
+            }
+        }
+    }
+    let maxlen = Math.max(...lengths)
+    let ans=0  //最长递增子序列个数
+    let ResArr = []  //最长递增子序列数组
+    for(let i=0; i<n; i++) {
+        if(lengths[i] ===maxlen) {
+            ans+=counts[i]
+            ResArr.push(map.get(i))
+        }
+    }
+    console.log(lengths, counts,ans, map, ResArr)
+    return ans;
+}
 //乘机最大子数组， 可能包含负数
 //给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
 var maxProduct = function(nums) {

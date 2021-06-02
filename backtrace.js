@@ -240,3 +240,49 @@ var totalNQueens = function(n) {
   }
   return count
 };
+
+//复原ip地址
+//测试输入：s = "25525511135"
+//输出：["255.255.11.135","255.255.111.35"]
+//有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+//由于 IP 地址的每一段必须是 [0, 255][0,255] 中的整数，因此我们从 segStart 开始，
+//从小到大依次枚举当前这一段 IP 地址的结束位置 \textit{segEnd}segEnd。如果满足要求，就递归地进行下一段搜索，调用递归函数 \textit{dfs}(\textit{segId} + 1, \textit{segEnd} + 1)dfs(segId+1,segEnd+1)。
+//segId范围{0,1,2,3}
+var restoreIpAddresses = function(s) {
+  var SEG_COUNT =4; //分成4段
+  const segments = new Array(SEG_COUNT)
+  const ans = []
+  let length = s.length
+  //s[segStart] 的位置开始，搜索 IP 地址中的第 segId 段
+  const dfs = (s, segId, segStart) => {
+    //如果找到了4段，且遍历完了字符串，就是一种答案
+    if(segId === SEG_COUNT) {
+      if(segStart === length) {
+        ans.push(segments.join('.'))
+      }
+      return
+    }
+    //如果还没找到4段ip，已经遍历完字符串，提前回溯
+    if(segStart === s.length) {
+      return
+    }
+    //// 由于不能有前导零，如果当前数字为 0，那么这一段 IP 地址只能为 0
+    if(s.charAt(segStart) ==='0') {
+      segments[segId] = 0
+      dfs(s,segId+1, segStart+1)
+    }
+    //一般情况，枚举每一种可能并递归
+    let addr = 0
+    for(let segEnd = segStart; segEnd < length; ++segEnd) {
+      addr = addr*10 + (s.charAt(segEnd)-'0')
+      if(addr >0 && addr <=255) {
+        segments[segId] = addr
+        dfs(s, segId+1, segEnd+1)
+      }else {
+        break;
+      }
+    }
+  }
+  dfs(s, 0, 0)
+  return ans
+};

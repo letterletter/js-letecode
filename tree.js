@@ -460,7 +460,7 @@ var buildTree = function(preorder, inorder) {
         return null;
     }
     let map = new Map() //map存放节点在中序遍历中的位置
-    for(let i=0;i<inorder.length; i++) {
+    for(let i=0;i<inorder.length; i++) {6
         map.set(inorder[i], i)
     }
     const helper = (p_start, p_end, i_start, i_end) => {
