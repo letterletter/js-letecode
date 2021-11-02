@@ -96,13 +96,34 @@ var numDecodings = function(s) {
 
 //单词拆分
 // 给定一个非空字符串 s 和一个包含非空单词的列表 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+// 拆分时可以重复使用字典中的单词，可以假设字典中没有重复的单词
+/**
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {boolean}
+ */
 var wordBreak = function(s, wordDict) {
-  
+  let len = s.length;
+
+  // 初始化为''
+  let dp = new Array(len + 1).fill('');
+  for(let j = 1; j <= len; j++) {
+      let str = s.slice(0, j);
+
+      // 遍历wordDict
+      for(let word of wordDict) {
+          let wlen = word.length;
+          if(wlen <=j && dp[j] + dp[j-wlen] + word === str) {
+              dp[j] += dp[j-wlen] +word
+          }
+      }
+  } 
+  return dp[len] === str
 };
 //最长公共子序列
 //给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
 var longestCommonSubsequence = function(text1, text2) {
-
+    let 
 };
 
 ////全排列 给定一个 没有重复 数字的序列，返回其所有可能的全排列。

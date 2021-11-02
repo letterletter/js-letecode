@@ -44,18 +44,18 @@ var getLeastNumbers3 = function(arr, k) {
 };
 
 function Heapify(A, size,  i) {
-let l = 2*i+1, r = 2*i+2,smallest = i
-if(l<size) {
-  smallest = A[l] <A[i] ? l:smallest
-}
-if(r < size&& A[r] <A[smallest]) {
-  smallest = r
-}
-console.log(i, smallest)
-if(smallest!== i) {
-  swap(A, i, smallest)
-  Heapify(A, size, smallest)
-}
+    let l = 2*i+1, r = 2*i+2,smallest = i
+    if(l<size) {
+        smallest = A[l] <A[i] ? l:smallest
+    }
+    if(r < size&& A[r] <A[smallest]) {
+    smallest = r
+    }
+    console.log(i, smallest)
+    if(smallest!== i) {
+    swap(A, i, smallest)
+    Heapify(A, size, smallest)
+    }
 }
 
 function swap(arr, i, j) {
